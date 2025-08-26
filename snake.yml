@@ -1,0 +1,29 @@
+.github/workflows/
+
+name: Generate Snake
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # todos os dias à meia-noite
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
+
+      - name: Gerar snake.svg
+        uses: Platane/snk@v3
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: |
+            dist/github-contribution-grid-snake.svg
+            dist/github-contribution-grid-snake.svg?palette=github-light
+
+      - name: Commit do snake.svg
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "Atualiza animação da cobrinha"
+          add: "dist/*.svg"
